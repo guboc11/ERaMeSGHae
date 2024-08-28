@@ -1,7 +1,7 @@
 import hre from "hardhat";
 
 describe("Starbucks", function() {
-  console.log("Starbucks Test")
+  console.log("Mycontract Test")
 
   async function test() {
     const MyContract = await hre.ethers.getContractFactory("MyContract");
@@ -20,7 +20,7 @@ describe("Starbucks", function() {
 
     await myContract.createSupervisor(
       1,
-      "baseBuild",
+      0,
       "baseBuild-question1",
       "baseBuild-question2",
       "baseBuild-question3",
