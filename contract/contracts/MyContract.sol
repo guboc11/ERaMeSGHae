@@ -6,7 +6,6 @@ import './SupervisorStruct.sol';
 
 
 contract MyContract is ConstructionStruct, SupervisorStruct{
-
   // contract owner
   address private owner;
 
@@ -32,6 +31,23 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
     return supervisorID++;
   }
 
+  function getConstruction(uint constructionId) public view returns(Construction memory) {
+    Construction memory c = constructionMap[constructionId];
+    return c;
+  }
+
+  function getSupervisor(uint supervisorId) public view returns(Supervisor memory) {
+    Supervisor memory s = supervisorMap[supervisorId];
+    return s;
+  }
+
+  function getSuperviserID(uint constructionId, BuildType buildType) private returns(uint) {
+    // supervisor map에서 하나씩 꺼내봐서 cID, bT 와 일치하는 supervisor ID return
+    return 0;
+  }
+
+  /////////////////////////////////////////////////////
+  // create Functions /////////////////////////////////
 
   function createConstruction(
     string memory name,
@@ -111,23 +127,9 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
     constructionMap[constructionId] = c;
   }
 
-  function getConstruction(uint constructionId) public view returns(Construction memory) {
-    Construction memory c = constructionMap[constructionId];
 
-    return c;
-  }
-
-  function getSuperviserId(uint constructionId, BuildType buildType) private returns(uint) {
-
-    // supervisor map에서 하나씩 꺼내봐서 cID, bT 와 일치하는 supervisor ID return
-    return 0;
-  }
-
-  function getSupervisor(uint supervisorId) public view returns(Supervisor memory) {
-    Supervisor memory s = supervisorMap[supervisorId];
-
-    return s;
-  }
+  /////////////////////////////////////////////////////
+  // proceedBuild Functions ///////////////////////////
 
   function proceedBaseBuild(
     uint constructionId,
@@ -254,6 +256,9 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
 
   }
 
+  /////////////////////////////////////////////////////
+  // Evaluate Functions ///////////////////////////////
+
   function EvaluateExam(
     uint constructionId,
     uint supervisorId,
@@ -286,13 +291,9 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
     
     if(s.result1==ExamStatus.No){
       s.rejectReason1= reason1;
-    }
-
-     if(s.result2==ExamStatus.No){
+    } else if(s.result2==ExamStatus.No){
       s.rejectReason2= reason2;
-    }
-
-     if(s.result3==ExamStatus.No){
+    } else if(s.result3==ExamStatus.No){
       s.rejectReason3= reason3;
     }
 
