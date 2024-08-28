@@ -144,7 +144,9 @@ contract MyContract {
     c.baseBuild.usedSand += usedSand;
 
     // if used랑 needed랑 같아지거나 used가 더 커지면 isDone true로 해준다.
-
+    if (c.baseBuild.usedShovelHour >= c.baseBuild.neededShovelHour && c.baseBuild.usedSand >= c.baseBuild.neededSand) {
+      c.baseBuild.isDone = true;
+    }
 
     constructionMap[constructionId] = c;
   }
