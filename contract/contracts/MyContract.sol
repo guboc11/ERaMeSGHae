@@ -1,6 +1,15 @@
 pragma solidity ^0.8.13;
 
 contract MyContract {
+
+  address private owner;
+
+  constructor() {
+        console.log("Owner contract deployed by:", msg.sender);
+        owner = msg.sender; // 'msg.sender' is sender of current call, contract deployer for a constructor
+        emit OwnerSet(address(0), owner);
+    }
+
   struct Construction {
     uint id;
     string name;
@@ -229,7 +238,28 @@ contract MyContract {
     supervisorMap[supervisorId] = s;
   }
 
-  function UpdateRejectReason() public {
+  function UpdateRejectReason(
+    uint supervisorId,
+    string memory reason1,
+    string memory reason2,
+    string memory reason3
+  ) public {
+
+    Supervisor memory s = supervisorMap[supervisorId];
+    
+    if(s.result1==No){
+      s.rejectReason1= reason1;
+    }
+
+     if(s.result2==No){
+      s.rejectReason2= reason2;
+    }
+
+     if(s.result3==No){
+      s.rejectReason3= reason3;
+    }
+
+    supervisorMap[supervisorId] = s;
 
   }
 
