@@ -1,9 +1,11 @@
 pragma solidity ^0.8.13;
 
 import "hardhat/console.sol";
-import './MyStruct.sol';
+import './ConstructionStruct.sol';
+import './SupervisorStruct.sol';
 
-contract MyContract is MyStruct{
+
+contract MyContract is ConstructionStruct, SupervisorStruct{
 
   // contract owner
   address private owner;
@@ -41,6 +43,7 @@ contract MyContract is MyStruct{
     uint neededPipes,
     uint neededGlue
   ) public {
+    // 각 시공 과정 객체 생성
     BaseBuild memory newBaseBuild = BaseBuild(0, neededShovelHour, 0, 0, neededSand, 0, false, 0);
     FramingBuild memory newFrameBuild = FramingBuild(0, neededSteelFrame, 0, 0, neededCement, 0, false, 0);
     FinishingBuild memory newFinishBuild = FinishingBuild(0, neededTiles, 0, 0, neededPipes, 0, 0, neededGlue, 0, false, 0);
@@ -56,6 +59,7 @@ contract MyContract is MyStruct{
       newFinishBuild
     );
 
+    // construction 데이터 Map에 추가
     constructionMap[constructionId] = newConstruction;
   }
 
@@ -68,7 +72,8 @@ contract MyContract is MyStruct{
   ) public {
     Construction memory c = getConstruction(constructionId);
 
-    // if buildType에 따라 c.oooBuild.isDone 이 false 나가리. true면 진행.
+    // if buildType에 따라 각 시공의 isDone이 false면 나가리. true면 supervisor 생성 진행.
+    // 시공 다 끝니지도 않았는데 감리 진행 불가하니.
     if (buildType == BuildType.BaseBuild) {
       require(c.baseBuild.isDone, "Not Done Yet");
     } else if (buildType == BuildType.FramingBuild) {
