@@ -171,14 +171,22 @@ contract MyContract {
     uint usedPipes ,
     uint usedGlue
   ) public {
-    Construction memory c = constructionMap[constructionId];
 
-    // if FramingBuild가 isDone이 true일 때 실행 가능
-    if (!c.baseBuild.isDone) {
-      return ;
+
+    Construction memory c = constructionMap[constructionId];
+    //전단계 확인
+    require(c.framingBuild, "not completed");
+
+    c.finishingBuild.usedTiles += usedTiles;
+    c.finishingBuild.usedPipes += usedPipes;
+    c.finishingBuild.usedGlue += usedGlue;
+
+    //마무리공사 완료
+    if((c.finishingBuild.usedTiles>=c.finishingBuild.neededTiles)&&(c.finishingBuild.usedPipes>=c.finishingBuild.neededPipes)&&(c.finishingBuild.usedGlue>=c.finishingBuild.neededGlue)){
+        c.finishingBuild.isDone=true;
     }
 
-    // if used랑 needed랑 같아지거나 used가 더 커지면 isDone true로 해준다.
+    constructionMap[constructionId] = c;
 
   }
 
