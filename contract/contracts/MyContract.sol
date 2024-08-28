@@ -176,15 +176,15 @@ contract MyContract {
 
   function proceedFinishingBuild(
     uint constructionId,
-    uint usedTiles ,
-    uint usedPipes ,
+    uint usedTiles,
+    uint usedPipes,
     uint usedGlue
   ) public {
 
 
     Construction memory c = constructionMap[constructionId];
     //전단계 확인
-    require(c.framingBuild, "not completed");
+    require(c.framingBuild.isDone, "not completed");
 
     c.finishingBuild.usedTiles += usedTiles;
     c.finishingBuild.usedPipes += usedPipes;
