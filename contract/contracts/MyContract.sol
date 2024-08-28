@@ -152,7 +152,6 @@ contract MyContract is MyStruct{
     
     c.baseBuild.usedShovelHour += usedShovelHour;
     c.baseBuild.usedSand += usedSand;
-    c.baseBuild.isDone = true;
 
     constructionMap[constructionId] = c;
 
@@ -196,7 +195,6 @@ contract MyContract is MyStruct{
 
     c.framingBuild.usedSteelFrame += usedSteelFrame;
     c.framingBuild.usedCement += usedCement;
-    c.framingBuild.isDone = true;
 
     constructionMap[constructionId] = c;
 
@@ -245,7 +243,6 @@ contract MyContract is MyStruct{
     c.finishingBuild.usedTiles += usedTiles;
     c.finishingBuild.usedPipes += usedPipes;
     c.finishingBuild.usedGlue += usedGlue;
-    c.finishingBuild.isDone= true;
 
     constructionMap[constructionId] = c;
 
