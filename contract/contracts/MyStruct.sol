@@ -4,6 +4,7 @@ contract MyStruct {
   struct Construction {
     uint id;
     string name;
+    uint evaluationCount;
     BaseBuild baseBuild;
     FramingBuild framingBuild;
     FinishingBuild finishingBuild;
@@ -13,8 +14,10 @@ contract MyStruct {
   struct BaseBuild {
     uint usedShovelHour;
     uint neededShovelHour;
+    uint overShover;
     uint usedSand;
     uint neededSand;
+    uint overSand;
     bool isDone;
     uint supervisorID;
   }
@@ -23,8 +26,10 @@ contract MyStruct {
   struct FramingBuild {
     uint usedSteelFrame;
     uint neededSteelFrame;
+    uint overSteelFrame;
     uint usedCement;
     uint neededCement;
+    uint overCement;
     bool isDone;
     uint supervisorID;
   }
@@ -33,10 +38,13 @@ contract MyStruct {
   struct FinishingBuild {
     uint usedTiles;
     uint neededTiles;
+    uint overTiles;
     uint usedPipes;
     uint neededPipes;
+    uint overPipes;
     uint usedGlue;
     uint neededGlue;
+    uint overGlue;
     bool isDone;
     uint supervisorID;
   }
