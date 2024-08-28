@@ -31,17 +31,17 @@ contract MyContract {
 
   struct Supervisor {
     string id;
-    string ConstId;
-    string BuildId;
-    bool Examination1;
-    string ExamQuestion1;
-    string NoReason1;
-    bool Examination2;
-    string ExamQuestion2;
-    string NoReason2;
-    bool Examination3;
-    string ExamQuestion3;
-    string NoReason3;
+    string constructionId;
+    string buildId;
+    bool result1;
+    string question1;
+    string rejectReason1;
+    bool result2;
+    string question2;
+    string rejectReason2;
+    bool result3;
+    string question3;
+    string rejectReason3;
   }
 
 }
