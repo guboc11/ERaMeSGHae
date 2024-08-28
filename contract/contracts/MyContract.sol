@@ -25,7 +25,7 @@ contract MyContract is MyStruct{
     return constructionId++;
   }
 
-  function getSupervisorId() public returns (uint) {
+  function getNewSupervisorId() public returns (uint) {
     return supervisorId++;
   }
 
@@ -65,7 +65,18 @@ contract MyContract is MyStruct{
     string memory question2,
     string memory question3
   ) public {
-    uint supervisorId = getSupervisorId();
+    Construction memory c = getConstruction(constructionId);
+
+    // if buildType에 따라 c.oooBuild.isDone 이 false 나가리. true면 진행.
+    if (buildType == BuildType.BaseBuild) {
+      require(c.baseBuild.isDone, "Not Done Yet");
+    } else if (buildType == BuildType.FramingBuild) {
+      require(c.framingBuild.isDone, "Not Done Yet");
+    } else if (buildType == BuildType.FinishingBuild) {
+      require(c.finishingBuild.isDone, "Not Done Yet");
+    }
+
+    uint supervisorId = getNewSupervisorId();
 
     Supervisor memory newSupervisor = Supervisor(
       supervisorId,
@@ -82,8 +93,6 @@ contract MyContract is MyStruct{
       ""
     );
 
-    Construction memory c = getConstruction(constructionId);
-    
     if (buildType == BuildType.BaseBuild) {
       c.baseBuild.supervisorID = supervisorId;
     } else if (buildType == BuildType.FramingBuild) {
@@ -93,6 +102,7 @@ contract MyContract is MyStruct{
     }
 
     supervisorMap[supervisorId] = newSupervisor;
+    constructionMap[constructionId] = c;
   }
 
   function getConstruction(uint constructionId) public view returns(Construction memory) {
