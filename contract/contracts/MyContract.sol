@@ -221,7 +221,28 @@ contract MyContract {
       
   }
 
-  function UpdateRejectReason() public {
+  function UpdateRejectReason(
+    uint supervisorId,
+    string memory reason1,
+    string memory reason2,
+    string memory reason3
+  ) public {
+
+    Supervisor memory s = supervisorMap[supervisorId];
+    
+    if(s.result1==No){
+      s.rejectReason1= reason1;
+    }
+
+     if(s.result2==No){
+      s.rejectReason2= reason2;
+    }
+
+     if(s.result3==No){
+      s.rejectReason3= reason3;
+    }
+
+    supervisorMap[supervisorId] = s;
 
   }
 
