@@ -1,8 +1,12 @@
 pragma solidity ^0.8.13;
 
+import "hardhat/console.sol";
+
 contract MyContract {
 
   address private owner;
+
+  event OwnerSet(address indexed oldOwner, address indexed newOwner);
 
   constructor() {
         console.log("Owner contract deployed by:", msg.sender);
@@ -239,15 +243,15 @@ contract MyContract {
 
     Supervisor memory s = supervisorMap[supervisorId];
     
-    if(s.result1==No){
+    if(s.result1==ExamStatus.No){
       s.rejectReason1= reason1;
     }
 
-     if(s.result2==No){
+     if(s.result2==ExamStatus.No){
       s.rejectReason2= reason2;
     }
 
-     if(s.result3==No){
+     if(s.result3==ExamStatus.No){
       s.rejectReason3= reason3;
     }
 
