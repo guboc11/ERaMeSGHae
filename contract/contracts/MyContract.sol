@@ -1,8 +1,12 @@
 pragma solidity ^0.8.13;
 
+import "hardhat/console.sol";
+
 contract MyContract {
 
   address private owner;
+
+  event OwnerSet(address indexed oldOwner, address indexed newOwner);
 
   constructor() {
         // console.log("Owner contract deployed by:", msg.sender);
