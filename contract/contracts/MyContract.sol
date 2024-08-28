@@ -259,7 +259,7 @@ contract MyContract is MyStruct{
     Construction memory c = constructionMap[constructionId];
     Supervisor memory s = supervisorMap[supervisorId];
 
-    c.evaluationCount += 1;
+    c.totalEvaluationCount += 1;
 
     //3개의 result 업데이트
     s.result1 = result1;

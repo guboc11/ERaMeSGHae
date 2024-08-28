@@ -4,7 +4,7 @@ contract MyStruct {
   struct Construction {
     uint id;
     string name;
-    uint evaluationCount;
+    uint totalEvaluationCount;
     BaseBuild baseBuild;
     FramingBuild framingBuild;
     FinishingBuild finishingBuild;
