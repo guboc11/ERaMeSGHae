@@ -1,13 +1,30 @@
 pragma solidity ^0.8.13;
 
 contract MyContract {
-    uint number = 0;
 
-    function addNumber() public{
-        number += 1;
-    }
+  struct Construction {
+    string id;
+    BaseBuild baseBuild;
+    FramingBuild framingBuild;
+    FinishingBuild finishingBuild;
+  }
 
-    function getNumber() public view returns(uint) {
-        return number;
-    }
+  struct BaseBuild {
+    uint process1;
+    uint process2;
+    uint process3;
+  }
+
+  struct FramingBuild {
+    uint process1;
+    uint process2;
+    uint process3;
+  }
+
+  struct FinishingBuild {
+    uint process1;
+    uint process2;
+    uint process3;
+  }
+
 }
