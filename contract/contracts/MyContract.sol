@@ -157,6 +157,8 @@ contract MyContract {
     uint usedCement
   ) public {
     Construction memory c = constructionMap[constructionId];
+    c.framingBuild.usedSteelFrame += usedSteelFrame;
+    c.framingBuild.usedCement += usedCement;
 
     // if BaseBuild가 isDone이 true일 때 실행 가능
     if (!c.baseBuild.isDone) {
@@ -164,7 +166,12 @@ contract MyContract {
     }
 
     // if used랑 needed랑 같아지거나 used가 더 커지면 isDone true로 해준다.
+    if (c.framingBuild.usedSteelFrame >= c.framingBuild.neededSteelFrame &&
+     c.framingBuild.usedCement >= c.framingBuild.neededCement) {
+      c.framingBuild.isDone = true;
+    }
 
+    constructionMap[constructionId] = c;
   }
 
   function proceedFinishingBuild(
