@@ -41,7 +41,7 @@ contract MyContract {
   struct Supervisor {
     uint id;
     uint constructionId;
-    string buildName;
+    BuildType buildType;
     string question1;
     bool result1;
     string rejectReason1;
@@ -51,6 +51,12 @@ contract MyContract {
     string question3;
     bool result3;
     string rejectReason3;
+  }
+
+  enum BuildType {
+    BaseBuild,
+    FramingBuild,
+    FinishingBuild
   }
 
   mapping (uint => Construction) private constructionMap;
@@ -97,7 +103,7 @@ contract MyContract {
 
   function createSupervisor(
     uint constructionId,
-    string memory buildName,
+    BuildType buildType,
     string memory question1,
     string memory question2,
     string memory question3
@@ -107,7 +113,7 @@ contract MyContract {
     Supervisor memory newSupervisor = Supervisor(
       supervisorId,
       constructionId,
-      buildName,
+      buildType,
       question1,
       false,
       "",
@@ -153,7 +159,7 @@ contract MyContract {
 
   function proceedFramingBuild(
     uint constructionId,
-    uint usedSteelFrame ,
+    uint usedSteelFrame,
     uint usedCement
   ) public {
     Construction memory c = constructionMap[constructionId];
