@@ -43,13 +43,13 @@ contract MyContract {
     uint constructionId;
     BuildType buildType;
     string question1;
-    bool result1;
+    ExamStatus result1;
     string rejectReason1;
     string question2;
-    bool result2;
+    ExamStatus result2;
     string rejectReason2;
     string question3;
-    bool result3;
+    ExamStatus result3;
     string rejectReason3;
   }
 
@@ -58,6 +58,13 @@ contract MyContract {
     FramingBuild,
     FinishingBuild
   }
+
+  enum ExamStatus {
+    Before,
+    Yes,
+    No
+  }
+
 
   mapping (uint => Construction) private constructionMap;
   mapping (uint => Supervisor) private supervisorMap;
@@ -115,13 +122,13 @@ contract MyContract {
       constructionId,
       buildType,
       question1,
-      false,
+      ExamStatus.Before,
       "",
       question2,
-      false,
+      ExamStatus.Before,
       "",
       question3,
-      false,
+      ExamStatus.Before,
       ""
     );
 
