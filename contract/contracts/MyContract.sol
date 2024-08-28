@@ -5,28 +5,29 @@ import './MyStruct.sol';
 
 contract MyContract is MyStruct{
 
+  // contract owner
   address private owner;
 
   event OwnerSet(address indexed oldOwner, address indexed newOwner);
 
   constructor() {
-        // console.log("Owner contract deployed by:", msg.sender);
-        owner = msg.sender; // 'msg.sender' is sender of current call, contract deployer for a constructor
-        // emit OwnerSet(address(0), owner);
-    }
+    owner = msg.sender; // 'msg.sender' is sender of current call, contract deployer for a constructor
+  }
 
+  // construction과 supervisor를 담기 위한 map
   mapping (uint => Construction) private constructionMap;
   mapping (uint => Supervisor) private supervisorMap;
 
-  uint private constructionId = 0;
-  uint private supervisorId = 1;
+  // construction, supervisor ID
+  uint private constructionID = 0;
+  uint private supervisorID = 1;
 
-  function getConstructionId() public returns (uint) {
-    return constructionId++;
+  function getNewConstructionID() public returns (uint) {
+    return constructionID++;
   }
 
-  function getNewSupervisorId() public returns (uint) {
-    return supervisorId++;
+  function getNewSupervisorID() public returns (uint) {
+    return supervisorID++;
   }
 
 
@@ -44,7 +45,7 @@ contract MyContract is MyStruct{
     FramingBuild memory newFrameBuild = FramingBuild(0, neededSteelFrame, 0, 0, neededCement, 0, false, 0);
     FinishingBuild memory newFinishBuild = FinishingBuild(0, neededTiles, 0, 0, neededPipes, 0, 0, neededGlue, 0, false, 0);
 
-    uint constructionId = getConstructionId();
+    uint constructionId = getNewConstructionID();
 
     Construction memory newConstruction = Construction(
       constructionId,
@@ -76,7 +77,7 @@ contract MyContract is MyStruct{
       require(c.finishingBuild.isDone, "Not Done Yet");
     }
 
-    uint supervisorId = getNewSupervisorId();
+    uint supervisorId = getNewSupervisorID();
 
     Supervisor memory newSupervisor = Supervisor(
       supervisorId,
