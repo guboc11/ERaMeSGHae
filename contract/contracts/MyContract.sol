@@ -142,7 +142,44 @@ contract MyContract {
     Construction memory c = constructionMap[constructionId];
     c.baseBuild.usedShovelHour += usedShovelHour;
     c.baseBuild.usedSand += usedSand;
+
+    // if used랑 needed랑 같아지거나 used가 더 커지면 isDone true로 해준다.
+
+
     constructionMap[constructionId] = c;
+  }
+
+  function proceedFramingBuild(
+    uint constructionId,
+    uint usedSteelFrame ,
+    uint usedCement
+  ) public {
+    Construction memory c = constructionMap[constructionId];
+
+    // if BaseBuild가 isDone이 true일 때 실행 가능
+    if (!c.baseBuild.isDone) {
+      return ;
+    }
+
+    // if used랑 needed랑 같아지거나 used가 더 커지면 isDone true로 해준다.
+
+  }
+
+  function proceedFinishingBuild(
+    uint constructionId,
+    uint usedTiles ,
+    uint usedPipes ,
+    uint usedGlue
+  ) public {
+    Construction memory c = constructionMap[constructionId];
+
+    // if FramingBuild가 isDone이 true일 때 실행 가능
+    if (!c.baseBuild.isDone) {
+      return ;
+    }
+
+    // if used랑 needed랑 같아지거나 used가 더 커지면 isDone true로 해준다.
+
   }
 
 
