@@ -214,11 +214,19 @@ contract MyContract {
 
   function EvaluateExam(
     uint supervisorId,
-    bool result1,
-    bool result2,
-    bool result3
+    ExamStatus result1,
+    ExamStatus result2,
+    ExamStatus result3
   ) public {
-      
+
+    Supervisor memory s = supervisorMap[supervisorId];
+
+    //3개의 result 업데이트
+    s.result1 = result1;
+    s.result2 = result2;
+    s.result3 = result3;
+
+    supervisorMap[supervisorId] = s;
   }
 
   function UpdateRejectReason() public {
