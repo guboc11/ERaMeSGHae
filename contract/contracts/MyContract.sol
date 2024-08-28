@@ -212,6 +212,19 @@ contract MyContract {
 
   }
 
+  function EvaluateExam(
+    uint supervisorId,
+    bool result1,
+    bool result2,
+    bool result3
+  ) public {
+      
+  }
+
+  function UpdateRejectReason() public {
+
+  }
+
 
 
 }
