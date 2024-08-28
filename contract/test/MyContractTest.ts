@@ -26,8 +26,12 @@ describe("Starbucks", function() {
       "baseBuild-question3",
     );
 
-    let construction = await myContract.getConstruction("construction1");
-    console.log(construction.toString());
+    let construction = await myContract.getConstruction(0);
+    console.log(construction);
+
+    await myContract.proceedBaseBuild(0, 10, 2);
+    construction = await myContract.getConstruction(0);
+    console.log(construction);
 
   }
 

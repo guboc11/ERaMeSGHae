@@ -15,6 +15,7 @@ contract MyContract {
     uint neededShovelHour;
     uint usedSand;
     uint neededSand;
+    bool isDone;
   }
 
   // 골조 공사
@@ -23,6 +24,7 @@ contract MyContract {
     uint neededSteelFrame;
     uint usedCement;
     uint neededCement;
+    bool isDone;
   }
 
   // 마무리 공사
@@ -33,6 +35,7 @@ contract MyContract {
     uint neededPipes;
     uint usedGlue;
     uint neededGlue;
+    bool isDone;
   }
 
   struct Supervisor {
@@ -50,7 +53,7 @@ contract MyContract {
     string rejectReason3;
   }
 
-  mapping (string => Construction) private constructionMap;
+  mapping (uint => Construction) private constructionMap;
   mapping (uint => Supervisor) private supervisorMap;
 
   uint private constructionId = 0;
@@ -75,9 +78,9 @@ contract MyContract {
     uint neededPipes,
     uint neededGlue
   ) public {
-    BaseBuild memory newBaseBuild = BaseBuild(0, neededShovelHour, 0, neededSand);
-    FramingBuild memory newFrameBuild = FramingBuild(0, neededSteelFrame, 0, neededCement);
-    FinishingBuild memory newFinishBuild = FinishingBuild(0, neededTiles, 0, neededPipes, 0, neededGlue);
+    BaseBuild memory newBaseBuild = BaseBuild(0, neededShovelHour, 0, neededSand, false);
+    FramingBuild memory newFrameBuild = FramingBuild(0, neededSteelFrame, 0, neededCement, false);
+    FinishingBuild memory newFinishBuild = FinishingBuild(0, neededTiles, 0, neededPipes, 0, neededGlue, false);
 
     uint constructionId = getConstructionId();
 
@@ -89,7 +92,7 @@ contract MyContract {
       newFinishBuild
     );
 
-    constructionMap[newConstruction.name] = newConstruction;
+    constructionMap[constructionId] = newConstruction;
   }
 
   function createSupervisor(
@@ -119,10 +122,27 @@ contract MyContract {
     supervisorMap[supervisorId] = newSupervisor;
   }
 
-  function getConstruction(string memory constructionName) public view returns(Construction memory) {
-    Construction memory c = constructionMap[constructionName];
+  function getConstruction(uint constructionId) public view returns(Construction memory) {
+    Construction memory c = constructionMap[constructionId];
 
     return c;
+  }
+
+  function getSupervisor(uint supervisorId) public view returns(Supervisor memory) {
+    Supervisor memory s = supervisorMap[supervisorId];
+
+    return s;
+  }
+
+  function proceedBaseBuild(
+    uint constructionId,
+    uint usedShovelHour,
+    uint usedSand
+  ) public {
+    Construction memory c = constructionMap[constructionId];
+    c.baseBuild.usedShovelHour += usedShovelHour;
+    c.baseBuild.usedSand += usedSand;
+    constructionMap[constructionId] = c;
   }
 
 
