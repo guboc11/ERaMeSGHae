@@ -1,13 +1,18 @@
 pragma solidity ^0.8.13;
 
 contract MyContract {
-    uint number = 0;
-
-    function addNumber() public{
-        number += 1;
-    }
-
-    function getNumber() public view returns(uint) {
-        return number;
+    struct Supervisor {
+        string id;
+        string ConstId;
+        string BuildId;
+        bool Examination1;
+        string ExamQuestion1;
+        string NoReason1;
+        bool Examination2;
+        string ExamQuestion2;
+        string NoReason2;
+        bool Examination3;
+        string ExamQuestion3;
+        string NoReason3;
     }
 }
