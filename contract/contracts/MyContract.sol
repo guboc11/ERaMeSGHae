@@ -1,8 +1,9 @@
 pragma solidity ^0.8.13;
 
 import "hardhat/console.sol";
+import './MyStruct.sol';
 
-contract MyContract {
+contract MyContract is MyStruct{
 
   address private owner;
 
@@ -14,76 +15,11 @@ contract MyContract {
         // emit OwnerSet(address(0), owner);
     }
 
-  struct Construction {
-    uint id;
-    string name;
-    BaseBuild baseBuild;
-    FramingBuild framingBuild;
-    FinishingBuild finishingBuild;
-  }
-
-  // 기초 공사
-  struct BaseBuild {
-    uint usedShovelHour;
-    uint neededShovelHour;
-    uint usedSand;
-    uint neededSand;
-    bool isDone;
-  }
-
-  // 골조 공사
-  struct FramingBuild {
-    uint usedSteelFrame;
-    uint neededSteelFrame;
-    uint usedCement;
-    uint neededCement;
-    bool isDone;
-  }
-
-  // 마무리 공사
-  struct FinishingBuild {
-    uint usedTiles;
-    uint neededTiles;
-    uint usedPipes;
-    uint neededPipes;
-    uint usedGlue;
-    uint neededGlue;
-    bool isDone;
-  }
-
-  struct Supervisor {
-    uint id;
-    uint constructionId;
-    BuildType buildType;
-    string question1;
-    ExamStatus result1;
-    string rejectReason1;
-    string question2;
-    ExamStatus result2;
-    string rejectReason2;
-    string question3;
-    ExamStatus result3;
-    string rejectReason3;
-  }
-
-  enum BuildType {
-    BaseBuild,
-    FramingBuild,
-    FinishingBuild
-  }
-
-  enum ExamStatus {
-    Before,
-    Yes,
-    No
-  }
-
-
   mapping (uint => Construction) private constructionMap;
   mapping (uint => Supervisor) private supervisorMap;
 
   uint private constructionId = 0;
-  uint private supervisorId = 0;
+  uint private supervisorId = 1;
 
   function getConstructionId() public returns (uint) {
     return constructionId++;
@@ -104,9 +40,9 @@ contract MyContract {
     uint neededPipes,
     uint neededGlue
   ) public {
-    BaseBuild memory newBaseBuild = BaseBuild(0, neededShovelHour, 0, neededSand, false);
-    FramingBuild memory newFrameBuild = FramingBuild(0, neededSteelFrame, 0, neededCement, false);
-    FinishingBuild memory newFinishBuild = FinishingBuild(0, neededTiles, 0, neededPipes, 0, neededGlue, false);
+    BaseBuild memory newBaseBuild = BaseBuild(0, neededShovelHour, 0, neededSand, false, 0);
+    FramingBuild memory newFrameBuild = FramingBuild(0, neededSteelFrame, 0, neededCement, false, 0);
+    FinishingBuild memory newFinishBuild = FinishingBuild(0, neededTiles, 0, neededPipes, 0, neededGlue, false, 0);
 
     uint constructionId = getConstructionId();
 
@@ -145,6 +81,16 @@ contract MyContract {
       ""
     );
 
+    Construction memory c = getConstruction(constructionId);
+    
+    if (buildType == BuildType.BaseBuild) {
+      c.baseBuild.supervisorID = supervisorId;
+    } else if (buildType == BuildType.FramingBuild) {
+      c.framingBuild.supervisorID = supervisorId;
+    } else if (buildType == BuildType.FinishingBuild) {
+      c.finishingBuild.supervisorID = supervisorId;
+    }
+
     supervisorMap[supervisorId] = newSupervisor;
   }
 
@@ -152,6 +98,12 @@ contract MyContract {
     Construction memory c = constructionMap[constructionId];
 
     return c;
+  }
+
+  function getSuperviserId(uint constructionId, BuildType buildType) private returns(uint) {
+
+    // supervisor map에서 하나씩 꺼내봐서 cID, bT 와 일치하는 supervisor ID return
+    return 0;
   }
 
   function getSupervisor(uint supervisorId) public view returns(Supervisor memory) {
@@ -191,6 +143,8 @@ contract MyContract {
       return ;
     }
 
+    // if BaseBuild의 Supervisor의 모든 평가가 YYY일 때 실행 가능
+
     // if used랑 needed랑 같아지거나 used가 더 커지면 isDone true로 해준다.
     if (c.framingBuild.usedSteelFrame >= c.framingBuild.neededSteelFrame &&
      c.framingBuild.usedCement >= c.framingBuild.neededCement) {
@@ -212,6 +166,8 @@ contract MyContract {
     //전단계 확인
     require(c.framingBuild.isDone, "not completed");
 
+    // if FramingBuild의 Supervisor의 모든 평가가 YYY일 때 실행 가능
+
     c.finishingBuild.usedTiles += usedTiles;
     c.finishingBuild.usedPipes += usedPipes;
     c.finishingBuild.usedGlue += usedGlue;
@@ -224,6 +180,7 @@ contract MyContract {
     constructionMap[constructionId] = c;
 
   }
+  
 
   function EvaluateExam(
     uint supervisorId,
