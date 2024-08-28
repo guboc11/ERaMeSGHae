@@ -1,6 +1,15 @@
 pragma solidity ^0.8.13;
 
 contract MyContract {
+
+  address private owner;
+
+  constructor() {
+        console.log("Owner contract deployed by:", msg.sender);
+        owner = msg.sender; // 'msg.sender' is sender of current call, contract deployer for a constructor
+        emit OwnerSet(address(0), owner);
+    }
+
   struct Construction {
     uint id;
     string name;
