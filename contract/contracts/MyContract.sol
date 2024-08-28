@@ -135,15 +135,16 @@ contract MyContract is MyStruct{
     uint usedCement
   ) public {
     Construction memory c = constructionMap[constructionId];
-    c.framingBuild.usedSteelFrame += usedSteelFrame;
-    c.framingBuild.usedCement += usedCement;
 
     // if BaseBuild가 isDone이 true일 때 실행 가능
-    if (!c.baseBuild.isDone) {
-      return ;
-    }
+    require(c.baseBuild.isDone, "not completed");
 
     // if BaseBuild의 Supervisor의 모든 평가가 YYY일 때 실행 가능
+    Supervisor memory s = supervisorMap[c.baseBuild.supervisorID];
+    require(s.result1==ExamStatus.Yes && s.result2==ExamStatus.Yes && s.result3==ExamStatus.Yes, "not accepted");
+
+    c.framingBuild.usedSteelFrame += usedSteelFrame;
+    c.framingBuild.usedCement += usedCement;
 
     // if used랑 needed랑 같아지거나 used가 더 커지면 isDone true로 해준다.
     if (c.framingBuild.usedSteelFrame >= c.framingBuild.neededSteelFrame &&
@@ -167,6 +168,8 @@ contract MyContract is MyStruct{
     require(c.framingBuild.isDone, "not completed");
 
     // if FramingBuild의 Supervisor의 모든 평가가 YYY일 때 실행 가능
+    Supervisor memory s = supervisorMap[c.framingBuild.supervisorID];
+    require(s.result1==ExamStatus.Yes && s.result2==ExamStatus.Yes && s.result3==ExamStatus.Yes, "not accepted");
 
     c.finishingBuild.usedTiles += usedTiles;
     c.finishingBuild.usedPipes += usedPipes;

@@ -2,6 +2,10 @@
   "name": "hardhat-project",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@types/prompt-sync": "^4.2.3",
     "hardhat": "^2.22.9"
+  },
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
   }
 }
