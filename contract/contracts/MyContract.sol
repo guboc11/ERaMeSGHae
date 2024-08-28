@@ -40,15 +40,16 @@ contract MyContract is MyStruct{
     uint neededPipes,
     uint neededGlue
   ) public {
-    BaseBuild memory newBaseBuild = BaseBuild(0, neededShovelHour, 0, neededSand, false, 0);
-    FramingBuild memory newFrameBuild = FramingBuild(0, neededSteelFrame, 0, neededCement, false, 0);
-    FinishingBuild memory newFinishBuild = FinishingBuild(0, neededTiles, 0, neededPipes, 0, neededGlue, false, 0);
+    BaseBuild memory newBaseBuild = BaseBuild(0, neededShovelHour, 0, 0, neededSand, 0, false, 0);
+    FramingBuild memory newFrameBuild = FramingBuild(0, neededSteelFrame, 0, 0, neededCement, 0, false, 0);
+    FinishingBuild memory newFinishBuild = FinishingBuild(0, neededTiles, 0, 0, neededPipes, 0, 0, neededGlue, 0, false, 0);
 
     uint constructionId = getConstructionId();
 
     Construction memory newConstruction = Construction(
       constructionId,
       name,
+      0,
       newBaseBuild,
       newFrameBuild,
       newFinishBuild
@@ -129,6 +130,24 @@ contract MyContract is MyStruct{
     constructionMap[constructionId] = c;
   }
 
+  function proceedBaseBuildAfterReject(
+    uint constructionId,
+    uint usedShovelHour,
+    uint usedSand
+  ) public {
+
+    Construction memory c = constructionMap[constructionId];
+    Supervisor memory s = supervisorMap[c.baseBuild.supervisorID];
+    require(s.result1==ExamStatus.No || s.result2==ExamStatus.No || s.result3==ExamStatus.No, "You don't have to do this.");
+    
+    c.baseBuild.usedShovelHour += usedShovelHour;
+    c.baseBuild.usedSand += usedSand;
+    c.baseBuild.isDone = true;
+
+    constructionMap[constructionId] = c;
+
+  } 
+
   function proceedFramingBuild(
     uint constructionId,
     uint usedSteelFrame,
@@ -154,6 +173,24 @@ contract MyContract is MyStruct{
 
     constructionMap[constructionId] = c;
   }
+
+  function proceedFramingBuildAfterReject(
+    uint constructionId,
+    uint usedSteelFrame,
+    uint usedCement
+  ) public {
+
+    Construction memory c = constructionMap[constructionId];
+    Supervisor memory s = supervisorMap[c.framingBuild.supervisorID];
+    require(s.result1==ExamStatus.No || s.result2==ExamStatus.No || s.result3==ExamStatus.No, "You don't have to do this.");  
+
+    c.framingBuild.usedSteelFrame += usedSteelFrame;
+    c.framingBuild.usedCement += usedCement;
+    c.framingBuild.isDone = true;
+
+    constructionMap[constructionId] = c;
+
+  } 
 
   function proceedFinishingBuild(
     uint constructionId,
@@ -183,16 +220,39 @@ contract MyContract is MyStruct{
     constructionMap[constructionId] = c;
 
   }
-  
+
+  function proceedFinishingBuildAfterReject(
+    uint constructionId,
+    uint usedTiles,
+    uint usedPipes,
+    uint usedGlue
+  ) public {
+    
+    Construction memory c = constructionMap[constructionId];
+    Supervisor memory s = supervisorMap[c.finishingBuild.supervisorID];
+    require(s.result1==ExamStatus.No || s.result2==ExamStatus.No || s.result3==ExamStatus.No, "You don't have to do this.");
+    
+    c.finishingBuild.usedTiles += usedTiles;
+    c.finishingBuild.usedPipes += usedPipes;
+    c.finishingBuild.usedGlue += usedGlue;
+    c.finishingBuild.isDone= true;
+
+    constructionMap[constructionId] = c;
+
+  }
 
   function EvaluateExam(
+    uint constructionId,
     uint supervisorId,
     ExamStatus result1,
     ExamStatus result2,
     ExamStatus result3
   ) public {
 
+    Construction memory c = constructionMap[constructionId];
     Supervisor memory s = supervisorMap[supervisorId];
+
+    c.evaluationCount += 1;
 
     //3개의 result 업데이트
     s.result1 = result1;
@@ -227,6 +287,28 @@ contract MyContract is MyStruct{
 
   }
 
+  /*
+  function finalCalculation(
+    uint constructionId
+  ) public {
 
+    Construction memory  c = constructionMap[constructionId];
+
+    c.count += c.baseBuild.count + c.framingBuild.count + c.finishingBuild.count;
+
+    c.baseBuild.overShover = c.baseBuild.usedShovelHour - c.baseBuild.neededShovelHour;
+    c.baseBuild.overSand = c.baseBuild.usedSand - c.baseBuild.neededSand;
+
+    c.framingBuild.overSteelFrame = c.framingBuild.usedSteelFrame - c.framingBuild.neededSteelFrame;
+    c.framingBuild.overCement = c.framingBuild.usedCement - c.framingBuild.neededSteelFrame;
+
+    c.finishingBuild.overTiles = c.finishingBuild.usedTiles - c.finishingBuild.neededTiles;
+    c.finishingBuild.overPipes = c.finishingBuild.usedPipes - c.finishingBuild.neededPipes;
+    c.finishingBuild.overGlue = c.finishingBuild.usedGlue - c.finishingBuild.neededGlue;
+
+    constructionMap[constructionId] = c;
+
+  }
+  */
 
 }
