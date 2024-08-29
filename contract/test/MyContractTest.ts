@@ -17,17 +17,20 @@ describe("Starbucks", function() {
       150,
       5
     );
+    console.log(1);
 
     await myContract.createSupervisor(
       1,
       0,
       "baseBuild-question1",
       "baseBuild-question2",
-      "baseBuild-question3",
+      "baseBuild-question3"
     );
+    console.log(2);
 
     let construction = await myContract.getConstruction(0);
     console.log(construction);
+    console.log(3);
 
     await myContract.proceedBaseBuild(0, 10, 2);
     construction = await myContract.getConstruction(0);

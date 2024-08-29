@@ -302,12 +302,13 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
 
   }
 
-  /*
-  function finalCalculation(
+  function CreateConstructionAssessmentSheet(
     uint constructionId
   ) public {
 
     Construction memory  c = constructionMap[constructionId];
+
+    overevaluationCount = c.totalEvaluationCount -3;
 
     c.count += c.baseBuild.count + c.framingBuild.count + c.finishingBuild.count;
 
@@ -321,10 +322,24 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
     c.finishingBuild.overPipes = c.finishingBuild.usedPipes - c.finishingBuild.neededPipes;
     c.finishingBuild.overGlue = c.finishingBuild.usedGlue - c.finishingBuild.neededGlue;
 
+    if (c.isAllDone == true){
+      ConstructionAssessmentSheet memory constructionAssesmentSheet = ConstructionAssessmentSheet(
+        overevaluationCount,
+        c.baseBuild.overShover, c.baseBuild.overSand,
+        c.framingBuild.overSteelFrame, c.framingBuild.overCement,
+        c.finishingBuild.overTiles, c.finishingBuild.overPipes, c.finishingBuild.overGlue
+      );
+      c.constructionAssesmentSheet = constructionAssesmentSheet;
+      
+     
+    }
+
+    
+
     constructionMap[constructionId] = c;
 
+
   }
-  */
 
   function ConstructionCompleted(
     uint constructionId,
@@ -335,6 +350,10 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
     if (c.finishingBuild.isDone && s.result1 == ExamStatus.Yes && s.result2==ExamStatus.Yes && s.result3==ExamStatus.Yes){
       c.isAllDone = true;
     }
+    
+    constructionMap[constructionId] = c;
+    supervisorMap[supervisorId] = s;
+
   }
   
   

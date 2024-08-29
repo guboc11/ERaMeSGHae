@@ -9,6 +9,7 @@ contract ConstructionStruct {
     FramingBuild framingBuild;
     FinishingBuild finishingBuild;
     bool isAllDone;
+    ConstructionAssessmentSheet constructionAssesmentSheet;
   }
   
   // 기초 공사
@@ -48,5 +49,16 @@ contract ConstructionStruct {
     uint overGlue;
     bool isDone;
     uint supervisorID;
+  }
+
+  struct ConstructionAssessmentSheet {
+    uint overevaluationCount;
+    uint overShover;
+    uint overSand;
+    uint overSteelFrame;
+    uint overCement;
+    uint overTiles;
+    uint overPipes;
+    uint overGlue;
   }
 }
