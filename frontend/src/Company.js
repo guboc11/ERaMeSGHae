@@ -1,12 +1,8 @@
-import logo from './logo.svg';
-import './App.css';
 import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
+import { TextField } from '@mui/material';
 import { ethers } from 'ethers';
-import Company from './Company';
-
-
+import Construction from './Construction';
 
 const abi = [
   "function getConstruction(uint256 constructionId) public view returns (tuple(uint256 id, string name, uint256 totalEvaluationCount, tuple(uint256 usedShovelHour, uint256 usedSand), tuple(uint256 usedSteelFrame, uint256 usedCement), tuple(uint256 usedTiles, uint256 usedPipes, uint256 usedGlue), bool isAllDone))",
@@ -32,7 +28,7 @@ const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545");
 const wallet = new ethers.Wallet("0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80", provider);
 const contractAddress = "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9";
 
-function App() {
+export default function Company() {
   const createConstructionCompany = async () => {
 
   }
@@ -74,22 +70,60 @@ function App() {
     const receipt = await tx.wait();
     console.log('Transaction was mined in block:', receipt.blockNumber);
   }
-  
-  return (
+  return(
     <div>
       <div className='m-2 p-4 border-black border-2'>
-        <h1 style={{ marginBottom: '1rem' }} className="text-3xl font-bold underline">
-          Construction Companies
+        <h1 style={{ marginBottom: '1rem' }} className="text-3xl font-bold">
+          Construction Company 1
         </h1>
-        <Button fullWidth variant="contained" color="success" onClick={createConstructionCompany}>시공사 생성</Button>
         <div>
-          <Company></Company>
-          <Company></Company>
+          <Construction></Construction>
+          <Construction></Construction>
         </div>
 
+      <Grid container spacing={3} justifyContent="center" alignItems="center" >
+        <Grid item xs={12}>
+        </Grid>
+      </Grid>
+      <Grid container spacing={3} justifyContent="center" alignItems="center" style={{ minHeight: '30vh' }}>
+        <Grid item xs={4} className='flex justify-center'>
+          <TextField placeholder='공사 ID'></TextField>
+        </Grid>
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="inherit" onClick={createConstruction}>공사 생성</Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="success" onClick={getConstruction}>공사 확인</Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="info" onClick={getConstruction}>기초 공사 시행</Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="info" onClick={getConstruction}>골조 공사 시행</Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="info" onClick={getConstruction}>마무리 공사 시행</Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="success" onClick={getConstruction}>기초 공사 감리</Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="success" onClick={getConstruction}>골조 공사 감리</Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="success" onClick={getConstruction}>마무리 공사 감리</Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="warning" onClick={getConstruction}>기초 추가 공사 시행</Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="warning" onClick={getConstruction}>골조 추가 공사 시행</Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="warning" onClick={getConstruction}>마무리 추가 공사 시행</Button>
+        </Grid>
+      </Grid>
       </div>
     </div>
   );
 }
-
-export default App;
