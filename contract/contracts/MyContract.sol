@@ -23,8 +23,13 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
   mapping (uint => Constructor) private constructorMap;
 
   // construction, supervisor ID
+  uint private constructorID = 0;
   uint private constructionID = 0;
   uint private supervisorID = 1;
+
+  function getNewConstructorID() public returns (uint) {
+    return constructorID++;
+  }
 
   function getNewConstructionID() public returns (uint) {
     return constructionID++;
@@ -32,6 +37,11 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
 
   function getNewSupervisorID() public returns (uint) {
     return supervisorID++;
+  }
+
+  function getConstructor(uint constructorId) public view returns(Constructor memory) {
+    Constructor memory c = constructorMap[constructorId];
+    return c;
   }
 
   function getConstruction(uint constructionId) public view returns(Construction memory) {
@@ -52,15 +62,14 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
   /////////////////////////////////////////////////////
   // create Functions /////////////////////////////////
 
-  function createConstructor(
-    uint _id
-  ) public {
+  function createConstructor() public {
 
     Constructor memory newConstructor;
-
-    newConstructor.id=_id;
-    newConstructor.criteria=100;
-    newConstructor.canProposal=true;
+    
+    uint _id = getNewConstructorID();
+    newConstructor.id = _id;
+    newConstructor.criteria = 100;
+    newConstructor.canProposal = true;
 
     constructorMap[_id] = newConstructor;
 
