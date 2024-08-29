@@ -28,7 +28,7 @@ const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545");
 const wallet = new ethers.Wallet("0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80", provider);
 const contractAddress = "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9";
 
-export default function Company() {
+export default function Company(props) {
   const createConstructionCompany = async () => {
 
   }
@@ -74,11 +74,11 @@ export default function Company() {
     <div>
       <div className='m-2 p-4 border-black border-2'>
         <h1 style={{ marginBottom: '1rem' }} className="text-3xl font-bold">
-          Construction Company 1
+          Construction Company {props.companyID}
         </h1>
         <div>
-          <Construction></Construction>
-          <Construction></Construction>
+          <Construction constructionID={0}></Construction>
+          <Construction constructionID={1}></Construction>
         </div>
 
       <Grid container spacing={3} justifyContent="center" alignItems="center" >

@@ -83,8 +83,8 @@ function App() {
         </h1>
         <Button fullWidth variant="contained" color="success" onClick={createConstructionCompany}>시공사 생성</Button>
         <div>
-          <Company></Company>
-          <Company></Company>
+          <Company companyID={0}></Company>
+          <Company companyID={1}></Company>
         </div>
 
       </div>
