@@ -1,9 +1,17 @@
 pragma solidity ^0.8.13;
 
 contract ConstructionStruct {
+
+  struct Constructor {
+    uint id;
+    uint criteria;
+    bool canProposal;
+    uint[] constructions;
+  }
+
   struct Construction {
     uint id;
-    string name;
+    uint constructorId;
     uint totalEvaluationCount;
     BaseBuild baseBuild;
     FramingBuild framingBuild;

@@ -15,9 +15,12 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
     owner = msg.sender; // 'msg.sender' is sender of current call, contract deployer for a constructor
   }
 
+  uint absCriteria = 80;
+
   // construction과 supervisor를 담기 위한 map
   mapping (uint => Construction) private constructionMap;
   mapping (uint => Supervisor) private supervisorMap;
+  mapping (uint => Constructor) private constructorMap;
 
   // construction, supervisor ID
   uint private constructionID = 0;
@@ -49,8 +52,22 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
   /////////////////////////////////////////////////////
   // create Functions /////////////////////////////////
 
+  function createConstructor(
+    uint _id
+  ) public {
+
+    Constructor memory newConstructor;
+
+    newConstructor.id=_id;
+    newConstructor.criteria=100;
+    newConstructor.canProposal=true;
+
+    constructorMap[_id] = newConstructor;
+
+  }
+
   function createConstruction(
-    string memory name,
+    uint constructorId,
     uint neededShovelHour,
     uint neededSand,
     uint neededSteelFrame,
@@ -69,7 +86,7 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
 
     Construction memory newConstruction = Construction(
       constructionId,
-      name,
+      constructorId,
       0,
       newBaseBuild,
       newFrameBuild,
@@ -308,7 +325,7 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
     uint constructionId
   ) public {
 
-    Construction memory  c = constructionMap[constructionId];
+    Construction memory c = constructionMap[constructionId];
 
     uint overevaluationCount = c.totalEvaluationCount -3;
 
@@ -354,8 +371,22 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
     constructionMap[constructionId] = c;
     supervisorMap[supervisorId] = s;
 
+    //여기다가 해당 건설사에 건축물 정보 넣어줘야함 
+
   }
   
+  function beforeBid(
+    uint constructorId
+  ) public {
+    if(constructorMap[constructorId].criteria >= absCriteria) {
+      constructorMap[constructorId].canProposal = true;
+    }
+    else{
+      constructorMap[constructorId].canProposal = false;
+    }
+    
+
+  }
   
 
 }
