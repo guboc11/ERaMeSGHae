@@ -28,7 +28,7 @@ export const abi = [
 
 export const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545");
 export const wallet = new ethers.Wallet("0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80", provider);
-export const contractAddress = "0x322813fd9a801c5507c9de605d63cea4f2ce6c44";
+export const contractAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
 
 export const createConstructionCompany = async () => {
 
@@ -95,16 +95,22 @@ export const proceedFinishingBuild = async (constructionID, usedTiles, usedPipes
   console.log('tx', tx);
 }
 
-export const createSupervisor = async () => {
+export const createSupervisor = async (constructionId, buildType ) => {
   console.log("감리 생성");
   const contract = new ethers.Contract(contractAddress, abi, wallet);
-  const tx = await contract.createSupervisor(0, 0, "Q1", "Q2", "Q3");
+  const tx = await contract.createSupervisor(constructionId, buildType, "Q1", "Q2", "Q3");
+
+  console.log('Transaction Hash:', tx.hash);
+}
+
+export const evaluateExam = async (constructionId, supervisorId) => {
+  console.log("감리 실행");
+  const contract = new ethers.Contract(contractAddress, abi, wallet);
+  const tx = await contract.EvaluateExam(constructionId, supervisorId, 1, 1, 1);
 
   // 트랜잭션 해시 출력
-  console.log('Transaction Hash:', tx.hash);
+  console.log('Transaction Hash:', tx);
 
-  const receipt = await tx.wait();
-  console.log('Transaction was mined in block:', receipt.blockNumber);
 }
 
 export const getSupervisor = async (supervisorID) => {

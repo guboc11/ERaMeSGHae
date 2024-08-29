@@ -120,12 +120,32 @@ export default function Construction(props) {
     console.log("기초 공사 Done")
   }
   const proceedFramingBuild = async() => {
-    await solidity.proceedFramingBuild(props.constructionID, neededShovelHour, neededSand)
+    await solidity.proceedFramingBuild(props.constructionID, neededSteelFrame, neededCement)
     console.log("골조 공사 Done")
   }
   const proceedFinishingBuild = async() => {
-    await solidity.proceedFinishingBuild(props.constructionID, neededShovelHour, neededSand)
+    await solidity.proceedFinishingBuild(props.constructionID, neededTiles, neededPipes, neededGlue)
     console.log("마무리 공사 Done")
+  }
+
+  const createBaseBuildSupervisor = async() => {
+    await solidity.createSupervisor(props.constructionID, 0)
+  }
+  const createFramingBuildSupervisor = async() => {
+    await solidity.createSupervisor(props.constructionID, 1)
+  }
+  const createFinishingBuildSupervisor = async() => {
+    await solidity.createSupervisor(props.constructionID, 2)
+  }
+
+  const evaluateBaseBuildExam = async() => {
+    await solidity.evaluateExam(props.constructionID, 1)
+  }
+  const evaluateFramingBuildExam = async() => {
+    await solidity.evaluateExam(props.constructionID, 2)
+  }
+  const evaluateFinishingBuildExam = async() => {
+    await solidity.evaluateExam(props.constructionID, 3)
   }
   // useEffect(()=>{
   //   getConstruction();
@@ -201,19 +221,28 @@ export default function Construction(props) {
           <Button fullWidth variant="contained" color="info" onClick={proceedBaseBuild}>기초 공사 시행</Button>
         </Grid>
         <Grid item xs={4}>
-          <Button fullWidth variant="contained" color="info" onClick={getConstruction}>골조 공사 시행</Button>
+          <Button fullWidth variant="contained" color="info" onClick={proceedFramingBuild}>골조 공사 시행</Button>
         </Grid>
         <Grid item xs={4}>
-          <Button fullWidth variant="contained" color="info" onClick={getConstruction}>마무리 공사 시행</Button>
+          <Button fullWidth variant="contained" color="info" onClick={proceedFinishingBuild}>마무리 공사 시행</Button>
         </Grid>
         <Grid item xs={4}>
-          <Button fullWidth variant="contained" color="success" onClick={getConstruction}>기초 공사 감리</Button>
+          <Button fullWidth variant="contained" color="success" onClick={createBaseBuildSupervisor}>기초 공사 감리 추가</Button>
         </Grid>
         <Grid item xs={4}>
-          <Button fullWidth variant="contained" color="success" onClick={getConstruction}>골조 공사 감리</Button>
+          <Button fullWidth variant="contained" color="success" onClick={createFramingBuildSupervisor}>골조 공사 감리 추가</Button>
         </Grid>
         <Grid item xs={4}>
-          <Button fullWidth variant="contained" color="success" onClick={getConstruction}>마무리 공사 감리</Button>
+          <Button fullWidth variant="contained" color="success" onClick={createFinishingBuildSupervisor}>마무리 공사 감리 추가</Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="success" onClick={evaluateBaseBuildExam}>기초 공사 감리</Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="success" onClick={evaluateFramingBuildExam}>골조 공사 감리</Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="success" onClick={evaluateFinishingBuildExam}>마무리 공사 감리</Button>
         </Grid>
         <Grid item xs={4}>
           <Button fullWidth variant="contained" color="warning" onClick={getConstruction}>기초 추가 공사 시행</Button>
