@@ -9,7 +9,6 @@ import * as solidity from './solidityFunctions'
 
 export default function Company(props) {
   const [constructionID, setConstructionID] = useState(0);
-  // const [constructionArray, setConstructionArray] = useState([]);
   const [name, setName] = useState("");
   const [neededShovelHour, setNeededShovelHour] = useState(0);
   const [neededSand, setNeededSand] = useState(0);
@@ -19,16 +18,6 @@ export default function Company(props) {
   const [neededPipes, setNeededPipes] = useState(0);
   const [neededGlue, setNeededGlue] = useState(0);
   
-  // useEffect(()=>{
-  //   const cid = solidity.getCurrentConstructionID();
-  //   let array = []
-  //   for (let i = 0 ; i <= cid ; i++) {
-  //     array.push(i);
-  //   }
-  //   setConstructionArray(array);
-
-  // },[])
-
   const getCurrentConstructionID = async () => {
     const cid = await solidity.getCurrentConstructionID();
     console.log(cid)
@@ -97,19 +86,13 @@ export default function Company(props) {
           <Construction constructionID={1}></Construction>
         </div>
 
-      <Grid container spacing={3} justifyContent="center" alignItems="center" >
+      {/* <Grid container spacing={3} justifyContent="center" alignItems="center" >
         <Grid item xs={12}>
         </Grid>
       </Grid>
       <Grid container spacing={3} justifyContent="center" alignItems="center" style={{ minHeight: '30vh' }}>
-        <Grid item xs={4} className='flex justify-center'>
+        <Grid item xs={2} className='flex justify-center'>
           <TextField placeholder='공사 ID' type='number' onChange={(event)=>{if (event.target.value == null) {setConstructionID(0)}; setConstructionID(event.target.value);}}></TextField>
-        </Grid>
-        <Grid item xs={4}>
-          <Button fullWidth variant="contained" color="inherit" onClick={createConstruction}>공사 생성</Button>
-        </Grid>
-        <Grid item xs={4}>
-          <Button fullWidth variant="contained" color="success" onClick={getConstruction}>공사 확인</Button>
         </Grid>
         <Grid item xs={4}>
           <Button fullWidth variant="contained" color="info" onClick={getConstruction}>기초 공사 시행</Button>
@@ -138,7 +121,7 @@ export default function Company(props) {
         <Grid item xs={4}>
           <Button fullWidth variant="contained" color="warning" onClick={getConstruction}>마무리 추가 공사 시행</Button>
         </Grid>
-      </Grid>
+      </Grid> */}
       </div>
     </div>
   );

@@ -5,57 +5,9 @@ import { ethers } from 'ethers';
 import { abi, provider, wallet, contractAddress } from './solidityFunctions';
 import * as solidity from './solidityFunctions'
 import { useEffect, useState } from 'react';
+import { TextField } from '@mui/material';
 
 export default function Construction(props) {
-  // const [construction, setConstruction] = useState({
-  //   id : "",
-  //   name : "",
-  //   totalEvaluationCount : "",
-  //   baseBuild : {
-  //     usedShovelHour : "",
-  //     neededShovelHour : "",
-  //     overShover : "",
-  //     usedSand : "",
-  //     neededSand : "",
-  //     overSand : "",
-  //     isDone : "",
-  //     supervisorID : ""
-  //   },
-  //   framingBuild : {
-  //     usedSteelFrame : 0,
-  //     neededSteelFrame : 0,
-  //     overSteelFrame : 0,
-  //     usedCement : 0,
-  //     neededCement : 0,
-  //     overCement : 0,
-  //     isDone : false,
-  //     supervisorID : 0
-  //   },
-  //   finishingBuild : {
-  //     usedTiles : 0,
-  //     neededTiles : 0,
-  //     overTiles : 0,
-  //     usedPipes : 0,
-  //     neededPipes : 0,
-  //     overPipes : 0,
-  //     usedGlue : 0,
-  //     neededGlue : 0,
-  //     overGlue : 0,
-  //     isDone : false,
-  //     supervisorID : 0
-  //   },
-  //   isAllDone : false,
-  //   constructionAssesmentSheet : {
-  //     overevaluationCount : 0,
-  //     overShover : 0,
-  //     overSand : 0,
-  //     overSteelFrame : 0,
-  //     overCement : 0,
-  //     overTiles : 0,
-  //     overPipes : 0,
-  //     overGlue : 0,
-  //   }
-  // });
   // Top-level properties
   const [id, setId] = useState("");
   const [name, setName] = useState("");
@@ -159,54 +111,21 @@ export default function Construction(props) {
     setAssessmentOverGlue(c.constructionAssesmentSheet.overGlue);
     
     // Log the updated state values
-    console.log('ID:', c.id);
-    console.log('Name:', c.name);
-    console.log('Total Evaluation Count:', c.totalEvaluationCount);
-    console.log('Is All Done:', c.isAllDone);
 
-    // BaseBuild properties
-    console.log('BaseBuild - Used Shovel Hour:', c.baseBuild.usedShovelHour);
-    console.log('BaseBuild - Needed Shovel Hour:', c.baseBuild.neededShovelHour);
-    console.log('BaseBuild - Over Shovel:', c.baseBuild.overShover);
-    console.log('BaseBuild - Used Sand:', c.baseBuild.usedSand);
-    console.log('BaseBuild - Needed Sand:', c.baseBuild.neededSand);
-    console.log('BaseBuild - Over Sand:', c.baseBuild.overSand);
-    console.log('BaseBuild - Is Done:', c.baseBuild.isDone);
-    console.log('BaseBuild - Supervisor ID:', c.baseBuild.supervisorID);
-
-    // FramingBuild properties
-    console.log('FramingBuild - Used Steel Frame:', c.framingBuild.usedSteelFrame);
-    console.log('FramingBuild - Needed Steel Frame:', c.framingBuild.neededSteelFrame);
-    console.log('FramingBuild - Over Steel Frame:', c.framingBuild.overSteelFrame);
-    console.log('FramingBuild - Used Cement:', c.framingBuild.usedCement);
-    console.log('FramingBuild - Needed Cement:', c.framingBuild.neededCement);
-    console.log('FramingBuild - Over Cement:', c.framingBuild.overCement);
-    console.log('FramingBuild - Is Done:', c.framingBuild.isDone);
-    console.log('FramingBuild - Supervisor ID:', c.framingBuild.supervisorID);
-
-    // FinishingBuild properties
-    console.log('FinishingBuild - Used Tiles:', c.finishingBuild.usedTiles);
-    console.log('FinishingBuild - Needed Tiles:', c.finishingBuild.neededTiles);
-    console.log('FinishingBuild - Over Tiles:', c.finishingBuild.overTiles);
-    console.log('FinishingBuild - Used Pipes:', c.finishingBuild.usedPipes);
-    console.log('FinishingBuild - Needed Pipes:', c.finishingBuild.neededPipes);
-    console.log('FinishingBuild - Over Pipes:', c.finishingBuild.overPipes);
-    console.log('FinishingBuild - Used Glue:', c.finishingBuild.usedGlue);
-    console.log('FinishingBuild - Needed Glue:', c.finishingBuild.neededGlue);
-    console.log('FinishingBuild - Over Glue:', c.finishingBuild.overGlue);
-    console.log('FinishingBuild - Is Done:', c.finishingBuild.isDone);
-    console.log('FinishingBuild - Supervisor ID:', c.finishingBuild.supervisorID);
-
-    // ConstructionAssessmentSheet properties
-    console.log('Assessment - Over Evaluation Count:', c.constructionAssesmentSheet.overevaluationCount);
-    console.log('Assessment - Over Shovel:', c.constructionAssesmentSheet.overShover);
-    console.log('Assessment - Over Sand:', c.constructionAssesmentSheet.overSand);
-    console.log('Assessment - Over Steel Frame:', c.constructionAssesmentSheet.overSteelFrame);
-    console.log('Assessment - Over Cement:', c.constructionAssesmentSheet.overCement);
-    console.log('Assessment - Over Tiles:', c.constructionAssesmentSheet.overTiles);
-    console.log('Assessment - Over Pipes:', c.constructionAssesmentSheet.overPipes);
-    console.log('Assessment - Over Glue:', c.constructionAssesmentSheet.overGlue);
     // setConstruction(c);
+  }
+
+  const proceedBaseBuild = async() => {
+    await solidity.proceedBaseBuild(props.constructionID, neededShovelHour, neededSand)
+    console.log("기초 공사 Done")
+  }
+  const proceedFramingBuild = async() => {
+    await solidity.proceedFramingBuild(props.constructionID, neededShovelHour, neededSand)
+    console.log("골조 공사 Done")
+  }
+  const proceedFinishingBuild = async() => {
+    await solidity.proceedFinishingBuild(props.constructionID, neededShovelHour, neededSand)
+    console.log("마무리 공사 Done")
   }
   // useEffect(()=>{
   //   getConstruction();
@@ -216,15 +135,20 @@ export default function Construction(props) {
     <div className='m-2 p-4 border-yellow-700 border-2'>
       <div className='flex'>
         <h1 style={{ marginBottom: '1rem' }} className="text-2xl font-bold">
-          Construction {props.constructionID}
+          Construction {props.constructionID} - 
         </h1>
+        {name&&
+        <h1 style={{ marginBottom: '1rem' }} className="text-2xl font-bold">
+           Name : {name}
+        </h1>
+        }
         <Grid item xs={4}>
           <Button fullWidth variant="contained" color="success" onClick={getConstruction}>공사 확인</Button>
         </Grid>
       </div>
-      <div>
+      {/* <div>
         <p>name {name}</p>
-      </div>
+      </div> */}
       <Grid container spacing={3} justifyContent="center" alignItems="center">
         <Grid item xs={8} sm={4} md={4}>
           <Box className="border-2 border-red-500 p-4">
@@ -267,6 +191,38 @@ export default function Construction(props) {
             <p>isDone : {finishingBuildIsDone.toString()}</p>
             <p>supervisorID : {finishingBuildSupervisorID.toString()}</p>
           </Box>
+        </Grid>
+      </Grid>
+      <Grid container spacing={3} justifyContent="center" alignItems="center" style={{ minHeight: '30vh' }}>
+        {/* <Grid item xs={2} className='flex justify-center'>
+          <TextField placeholder='공사 ID' type='number' onChange={(event)=>{if (event.target.value == null) {setConstructionID(0)}; setConstructionID(event.target.value);}}></TextField>
+        </Grid> */}
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="info" onClick={proceedBaseBuild}>기초 공사 시행</Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="info" onClick={getConstruction}>골조 공사 시행</Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="info" onClick={getConstruction}>마무리 공사 시행</Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="success" onClick={getConstruction}>기초 공사 감리</Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="success" onClick={getConstruction}>골조 공사 감리</Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="success" onClick={getConstruction}>마무리 공사 감리</Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="warning" onClick={getConstruction}>기초 추가 공사 시행</Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="warning" onClick={getConstruction}>골조 추가 공사 시행</Button>
+        </Grid>
+        <Grid item xs={4}>
+          <Button fullWidth variant="contained" color="warning" onClick={getConstruction}>마무리 추가 공사 시행</Button>
         </Grid>
       </Grid>
     </div>

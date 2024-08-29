@@ -74,6 +74,27 @@ export const getConstruction = async (constructionID) => {
   return result;
 }
 
+export const proceedBaseBuild = async (constructionID, usedShovelHour, usedSand) => {
+  const contract = new ethers.Contract(contractAddress, abi, wallet);
+  const tx = await contract.proceedBaseBuild(constructionID, usedShovelHour, usedSand);
+
+  console.log('tx', tx);
+}
+
+export const proceedFramingBuild = async (constructionID, usedSteelFrame, usedCement) => {
+  const contract = new ethers.Contract(contractAddress, abi, wallet);
+  const tx = await contract.proceedFramingBuild(constructionID, usedSteelFrame, usedCement);
+
+  console.log('tx', tx);
+}
+
+export const proceedFinishingBuild = async (constructionID, usedTiles, usedPipes, usedGlue) => {
+  const contract = new ethers.Contract(contractAddress, abi, wallet);
+  const tx = await contract.proceedFinishingBuild(constructionID, usedTiles, usedPipes, usedGlue);
+
+  console.log('tx', tx);
+}
+
 export const createSupervisor = async () => {
   console.log("감리 생성");
   const contract = new ethers.Contract(contractAddress, abi, wallet);
