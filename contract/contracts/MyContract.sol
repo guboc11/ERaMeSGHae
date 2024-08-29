@@ -63,6 +63,7 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
     BaseBuild memory newBaseBuild = BaseBuild(0, neededShovelHour, 0, 0, neededSand, 0, false, 0);
     FramingBuild memory newFrameBuild = FramingBuild(0, neededSteelFrame, 0, 0, neededCement, 0, false, 0);
     FinishingBuild memory newFinishBuild = FinishingBuild(0, neededTiles, 0, 0, neededPipes, 0, 0, neededGlue, 0, false, 0);
+    ConstructionAssessmentSheet memory newConstructionAssesmentSheet = ConstructionAssessmentSheet(0, 0, 0, 0, 0, 0, 0, 0);
 
     uint constructionId = getNewConstructionID();
 
@@ -73,7 +74,8 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
       newBaseBuild,
       newFrameBuild,
       newFinishBuild,
-      false
+      false,
+      newConstructionAssesmentSheet
     );
 
     // construction 데이터 Map에 추가
@@ -308,9 +310,7 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
 
     Construction memory  c = constructionMap[constructionId];
 
-    overevaluationCount = c.totalEvaluationCount -3;
-
-    c.count += c.baseBuild.count + c.framingBuild.count + c.finishingBuild.count;
+    uint overevaluationCount = c.totalEvaluationCount -3;
 
     c.baseBuild.overShover = c.baseBuild.usedShovelHour - c.baseBuild.neededShovelHour;
     c.baseBuild.overSand = c.baseBuild.usedSand - c.baseBuild.neededSand;
