@@ -3,6 +3,7 @@ import Grid from '@mui/material/Grid';
 import { TextField } from '@mui/material';
 import { ethers } from 'ethers';
 import Construction from './Construction';
+import { useState } from 'react';
 
 const abi = [
   "function getConstruction(uint256 constructionId) public view returns (tuple(uint256 id, string name, uint256 totalEvaluationCount, tuple(uint256 usedShovelHour, uint256 usedSand), tuple(uint256 usedSteelFrame, uint256 usedCement), tuple(uint256 usedTiles, uint256 usedPipes, uint256 usedGlue), bool isAllDone))",
@@ -29,6 +30,7 @@ const wallet = new ethers.Wallet("0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed
 const contractAddress = "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9";
 
 export default function Company(props) {
+  const [constructionID, setConstructionID] = useState(0)
   const createConstructionCompany = async () => {
 
   }
@@ -47,6 +49,7 @@ export default function Company(props) {
 
   const getConstruction = async () => {
     console.log("공사 확인");
+    console.log("c id :", constructionID)
     const contract = new ethers.Contract(contractAddress, abi, wallet);
     // const tx = await contract.getConstruction(0);
     const tx = await contract.getConstruction(0);
@@ -87,7 +90,7 @@ export default function Company(props) {
       </Grid>
       <Grid container spacing={3} justifyContent="center" alignItems="center" style={{ minHeight: '30vh' }}>
         <Grid item xs={4} className='flex justify-center'>
-          <TextField placeholder='공사 ID'></TextField>
+          <TextField placeholder='공사 ID' type='number' onChange={(event)=>{if (event.target.value == null) {setConstructionID(0)}; setConstructionID(event.target.value);}}></TextField>
         </Grid>
         <Grid item xs={4}>
           <Button fullWidth variant="contained" color="inherit" onClick={createConstruction}>공사 생성</Button>
