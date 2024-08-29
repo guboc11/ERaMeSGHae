@@ -34,6 +34,10 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
   function getNewConstructionID() public returns (uint) {
     return constructionID++;
   }
+  
+  function getCurrentConstructionID() public view returns (uint) {
+    return constructionID;
+  }
 
   function getNewSupervisorID() public returns (uint) {
     return supervisorID++;
@@ -76,7 +80,7 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
   }
 
   function createConstruction(
-    uint constructorId,
+    // uint constructorId,
     string memory name,
     uint neededShovelHour,
     uint neededSand,
@@ -96,7 +100,7 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
 
     Construction memory newConstruction = Construction(
       constructionId,
-      constructorId,
+      // constructorId,
       name,
       0,
       newBaseBuild,

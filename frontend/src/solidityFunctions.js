@@ -6,6 +6,7 @@ export const abi = [
   "function getSupervisor(uint256 supervisorId) public view returns (tuple(uint256 id, uint256 constructionId, uint8 buildType, string question1, uint8 result1, string rejectReason1, string question2, uint8 result2, string rejectReason2, string question3, uint8 result3, string rejectReason3))",
   "function getNewConstructorID() public returns (uint256)",
   "function getNewConstructionID() public returns (uint256)",
+  "function getCurrentConstructionID() public view returns (uint256)",
   "function getNewSupervisorID() public returns (uint256)",
   "function createConstructor() public",
   "function createConstruction(string memory name, uint256 neededShovelHour, uint256 neededSand, uint256 neededSteelFrame, uint256 neededCement, uint256 neededTiles, uint256 neededPipes, uint256 neededGlue) public",
@@ -27,7 +28,7 @@ export const abi = [
 
 export const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545");
 export const wallet = new ethers.Wallet("0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80", provider);
-export const contractAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
+export const contractAddress = "0x322813fd9a801c5507c9de605d63cea4f2ce6c44";
 
 export const createConstructionCompany = async () => {
 
@@ -52,6 +53,15 @@ export const createConstruction = async (name, neededShovelHour, neededSand, nee
 
   const receipt = await tx.wait();
   console.log('Transaction was mined in block:', receipt.blockNumber);
+}
+
+export const getCurrentConstructionID = async () => {
+  const contract = new ethers.Contract(contractAddress, abi, wallet);
+  const result = await contract.getCurrentConstructionID();
+
+  console.log('result', result);
+
+  return result;
 }
 
 export const getConstruction = async (constructionID) => {

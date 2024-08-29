@@ -6,12 +6,12 @@ contract ConstructionStruct {
     uint id;
     uint criteria;
     bool canProposal;
-    uint[] constructions;
+    // Construction[] constructions;
   }
 
   struct Construction {
     uint id;
-    uint constructorId;
+    // uint constructorId;
     string name;
     uint totalEvaluationCount;
     BaseBuild baseBuild;
