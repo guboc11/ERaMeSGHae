@@ -63,6 +63,7 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
     BaseBuild memory newBaseBuild = BaseBuild(0, neededShovelHour, 0, 0, neededSand, 0, false, 0);
     FramingBuild memory newFrameBuild = FramingBuild(0, neededSteelFrame, 0, 0, neededCement, 0, false, 0);
     FinishingBuild memory newFinishBuild = FinishingBuild(0, neededTiles, 0, 0, neededPipes, 0, 0, neededGlue, 0, false, 0);
+    ConstructionAssessmentSheet memory newConstructionAssesmentSheet = ConstructionAssessmentSheet(0, 0, 0, 0, 0, 0, 0, 0);
 
     uint constructionId = getNewConstructionID();
 
@@ -73,7 +74,8 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
       newBaseBuild,
       newFrameBuild,
       newFinishBuild,
-      false
+      false,
+      newConstructionAssesmentSheet
     );
 
     // construction 데이터 Map에 추가
@@ -302,14 +304,13 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
 
   }
 
-  /*
-  function finalCalculation(
+  function CreateConstructionAssessmentSheet(
     uint constructionId
   ) public {
 
     Construction memory  c = constructionMap[constructionId];
 
-    c.count += c.baseBuild.count + c.framingBuild.count + c.finishingBuild.count;
+    uint overevaluationCount = c.totalEvaluationCount -3;
 
     c.baseBuild.overShover = c.baseBuild.usedShovelHour - c.baseBuild.neededShovelHour;
     c.baseBuild.overSand = c.baseBuild.usedSand - c.baseBuild.neededSand;
@@ -321,10 +322,24 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
     c.finishingBuild.overPipes = c.finishingBuild.usedPipes - c.finishingBuild.neededPipes;
     c.finishingBuild.overGlue = c.finishingBuild.usedGlue - c.finishingBuild.neededGlue;
 
+    if (c.isAllDone == true){
+      ConstructionAssessmentSheet memory constructionAssesmentSheet = ConstructionAssessmentSheet(
+        overevaluationCount,
+        c.baseBuild.overShover, c.baseBuild.overSand,
+        c.framingBuild.overSteelFrame, c.framingBuild.overCement,
+        c.finishingBuild.overTiles, c.finishingBuild.overPipes, c.finishingBuild.overGlue
+      );
+      c.constructionAssesmentSheet = constructionAssesmentSheet;
+      
+     
+    }
+
+    
+
     constructionMap[constructionId] = c;
 
+
   }
-  */
 
   function ConstructionCompleted(
     uint constructionId,
@@ -335,6 +350,10 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
     if (c.finishingBuild.isDone && s.result1 == ExamStatus.Yes && s.result2==ExamStatus.Yes && s.result3==ExamStatus.Yes){
       c.isAllDone = true;
     }
+    
+    constructionMap[constructionId] = c;
+    supervisorMap[supervisorId] = s;
+
   }
   
   
