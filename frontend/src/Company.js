@@ -4,33 +4,12 @@ import { TextField } from '@mui/material';
 import { ethers } from 'ethers';
 import Construction from './Construction';
 import { useState } from 'react';
-
-const abi = [
-  "function getConstruction(uint256 constructionId) public view returns (tuple(uint256 id, string name, uint256 totalEvaluationCount, tuple(uint256 usedShovelHour, uint256 usedSand), tuple(uint256 usedSteelFrame, uint256 usedCement), tuple(uint256 usedTiles, uint256 usedPipes, uint256 usedGlue), bool isAllDone))",
-  "function getSupervisor(uint256 supervisorId) public view returns (tuple(uint256 id, uint256 constructionId, uint8 buildType, string question1, uint8 result1, string rejectReason1, string question2, uint8 result2, string rejectReason2, string question3, uint8 result3, string rejectReason3))",
-
-  "function createConstruction(string name, uint neededShovelHour, uint neededSand, uint neededSteelFrame, uint neededCement, uint neededTiles, uint neededPipes, uint neededGlue) public",
-  "function createSupervisor(uint constructionId, uint8 buildType, string question1, string question2, string question3) public",
-
-  "function proceedBaseBuild(uint constructionId, uint usedShovelHour, uint usedSand) public",
-  "function proceedBaseBuild( uint constructionId, uint usedShovelHour, uint usedSand) public",
-  "function proceedBaseBuildAfterReject( uint constructionId, uint usedShovelHour, uint usedSand) public",
-  "function proceedFramingBuild( uint constructionId, uint usedSteelFrame, uint usedCement) public",
-  "function proceedFramingBuildAfterReject( uint constructionId, uint usedSteelFrame, uint usedCement) public",
-  "function proceedFinishingBuild( uint constructionId, uint usedTiles, uint usedPipes, uint usedGlue) public",
-  "function proceedFinishingBuildAfterReject( uint constructionId, uint usedTiles, uint usedPipes, uint usedGlue) public",
-
-  "function EvaluateExam(uint256 constructionId, uint256 supervisorId, uint8 result1, uint8 result2, uint8 result3) public",
-  "function UpdateRejectReason( uint supervisorId, string reason1, string reason2, string reason3) public",
-  "function ConstructionCompleted( uint constructionId, uint supervisorId) public",
-];
-
-const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545");
-const wallet = new ethers.Wallet("0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80", provider);
-const contractAddress = "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9";
+import { abi, provider, wallet, contractAddress } from './abi';
 
 export default function Company(props) {
   const [constructionID, setConstructionID] = useState(0)
+  const [construction, setConstruction] = useState(null);
+
   const createConstructionCompany = async () => {
 
   }
@@ -48,15 +27,12 @@ export default function Company(props) {
   }
 
   const getConstruction = async () => {
-    console.log("공사 확인");
-    console.log("c id :", constructionID)
+    console.log("공사 확인, construction ID : ", constructionID);
     const contract = new ethers.Contract(contractAddress, abi, wallet);
-    // const tx = await contract.getConstruction(0);
-    const tx = await contract.getConstruction(0);
-    // const [name, neededShovelHour, neededSand] = result;
+    const result = await contract.getConstruction(constructionID);
 
-    // 트랜잭션 해시 출력
-    console.log('Transaction Hash:', tx);
+    console.log('result', result);
+    // setConstruction(result);
 
     // const receipt = await tx.wait();
     // console.log('Transaction was mined in block:', receipt.blockNumber);
@@ -73,6 +49,19 @@ export default function Company(props) {
     const receipt = await tx.wait();
     console.log('Transaction was mined in block:', receipt.blockNumber);
   }
+
+  const getSupervisor = async () => {
+    console.log("공사 확인, construction ID : ", constructionID);
+    const contract = new ethers.Contract(contractAddress, abi, wallet);
+    const tx = await contract.getConstruction(constructionID);
+    // const [name, neededShovelHour, neededSand] = result;
+
+    // 트랜잭션 해시 출력
+    console.log('Transaction Hash:', tx[1]);
+
+    // const receipt = await tx.wait();
+    // console.log('Transaction was mined in block:', receipt.blockNumber);
+  }
   return(
     <div>
       <div className='m-2 p-4 border-black border-2'>
@@ -80,8 +69,8 @@ export default function Company(props) {
           Construction Company {props.companyID}
         </h1>
         <div>
-          <Construction constructionID={0}></Construction>
-          <Construction constructionID={1}></Construction>
+          <Construction constructionID={0} construction={construction}></Construction>
+          {/* <Construction constructionID={1}></Construction> */}
         </div>
 
       <Grid container spacing={3} justifyContent="center" alignItems="center" >
