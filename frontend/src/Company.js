@@ -4,63 +4,20 @@ import { TextField } from '@mui/material';
 import { ethers } from 'ethers';
 import Construction from './Construction';
 import { useState } from 'react';
-import { abi, provider, wallet, contractAddress } from './abi';
+import { abi, provider, wallet, contractAddress } from './solidityFunctions';
+import * as solidity from './solidityFunctions'
 
 export default function Company(props) {
   const [constructionID, setConstructionID] = useState(0)
   const [construction, setConstruction] = useState(null);
 
-  const createConstructionCompany = async () => {
-
-  }
-
   const createConstruction = async () => {
-    console.log("공사 생성");
-    const contract = new ethers.Contract(contractAddress, abi, wallet);
-    const tx = await contract.createConstruction("construction1", 10,10,10, 10,10,10, 10);
-
-    // 트랜잭션 해시 출력
-    console.log('Transaction Hash:', tx.hash);
-
-    const receipt = await tx.wait();
-    console.log('Transaction was mined in block:', receipt.blockNumber);
+    await solidity.createConstruction("123",10,10,10,10,10,10,10);
   }
 
-  const getConstruction = async () => {
-    console.log("공사 확인, construction ID : ", constructionID);
-    const contract = new ethers.Contract(contractAddress, abi, wallet);
-    const result = await contract.getConstruction(constructionID);
+  const getConstruction = async() => {
+    await solidity.getConstruction(constructionID);
 
-    console.log('result', result);
-    // setConstruction(result);
-
-    // const receipt = await tx.wait();
-    // console.log('Transaction was mined in block:', receipt.blockNumber);
-  }
-
-  const createSupervisor = async () => {
-    console.log("감리 생성");
-    const contract = new ethers.Contract(contractAddress, abi, wallet);
-    const tx = await contract.createSupervisor(0, 0, "Q1", "Q2", "Q3");
-
-    // 트랜잭션 해시 출력
-    console.log('Transaction Hash:', tx.hash);
-
-    const receipt = await tx.wait();
-    console.log('Transaction was mined in block:', receipt.blockNumber);
-  }
-
-  const getSupervisor = async () => {
-    console.log("공사 확인, construction ID : ", constructionID);
-    const contract = new ethers.Contract(contractAddress, abi, wallet);
-    const tx = await contract.getConstruction(constructionID);
-    // const [name, neededShovelHour, neededSand] = result;
-
-    // 트랜잭션 해시 출력
-    console.log('Transaction Hash:', tx[1]);
-
-    // const receipt = await tx.wait();
-    // console.log('Transaction was mined in block:', receipt.blockNumber);
   }
   return(
     <div>

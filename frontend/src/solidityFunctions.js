@@ -22,4 +22,64 @@ export const abi = [
 
 export const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545");
 export const wallet = new ethers.Wallet("0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80", provider);
-export const contractAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
+export const contractAddress = "0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0";
+
+export const createConstructionCompany = async () => {
+
+}
+
+export const createConstruction = async (name, neededShovelHour, neededSand, neededSteelFrame, neededCement, neededTiles, neededPipes, neededGlue) => {
+  console.log("공사 생성");
+  const contract = new ethers.Contract(contractAddress, abi, wallet);
+  const tx = await contract.createConstruction(
+    name,
+    neededShovelHour,
+    neededSand,
+    neededSteelFrame,
+    neededCement,
+    neededTiles,
+    neededPipes,
+    neededGlue
+  );
+
+  // 트랜잭션 해시 출력
+  console.log('Transaction Hash:', tx.hash);
+
+  const receipt = await tx.wait();
+  console.log('Transaction was mined in block:', receipt.blockNumber);
+}
+
+export const getConstruction = async (constructionID) => {
+  console.log("공사 확인, construction ID : ", constructionID);
+  const contract = new ethers.Contract(contractAddress, abi, wallet);
+  const result = await contract.getConstruction(constructionID);
+
+  console.log('result', result);
+
+  return result;
+}
+
+export const createSupervisor = async () => {
+  console.log("감리 생성");
+  const contract = new ethers.Contract(contractAddress, abi, wallet);
+  const tx = await contract.createSupervisor(0, 0, "Q1", "Q2", "Q3");
+
+  // 트랜잭션 해시 출력
+  console.log('Transaction Hash:', tx.hash);
+
+  const receipt = await tx.wait();
+  console.log('Transaction was mined in block:', receipt.blockNumber);
+}
+
+export const getSupervisor = async (supervisorID) => {
+  console.log("공사 확인, construction ID : ", supervisorID);
+  const contract = new ethers.Contract(contractAddress, abi, wallet);
+  const tx = await contract.getSupervisor(supervisorID);
+  // const [name, neededShovelHour, neededSand] = result;
+
+  // 트랜잭션 해시 출력
+  console.log('Transaction Hash:', tx[1]);
+
+  // const receipt = await tx.wait();
+  // console.log('Transaction was mined in block:', receipt.blockNumber);
+}

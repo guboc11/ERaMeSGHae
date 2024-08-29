@@ -2,20 +2,69 @@ import { Box } from '@mui/material';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import { ethers } from 'ethers';
-import { abi, provider, wallet, contractAddress } from './abi';
+import { abi, provider, wallet, contractAddress } from './solidityFunctions';
+import * as solidity from './solidityFunctions'
+import { useEffect, useState } from 'react';
 
 export default function Construction(props) {
+  const [construction, setConstruction] = useState({
+    id : 0,
+    name : "",
+    totalEvaluationCount : 0,
+    baseBuild : {
+      usedShovelHour : 0,
+      neededShovelHour : 0,
+      overShover : 0,
+      usedSand : 0,
+      neededSand : 0,
+      overSand : 0,
+      isDone : false,
+      supervisorID : 0
+    },
+    framingBuild : {
+      usedSteelFrame : 0,
+      neededSteelFrame : 0,
+      overSteelFrame : 0,
+      usedCement : 0,
+      neededCement : 0,
+      overCement : 0,
+      isDone : false,
+      supervisorID : 0
+    },
+    finishingBuild : {
+      usedTiles : 0,
+      neededTiles : 0,
+      overTiles : 0,
+      usedPipes : 0,
+      neededPipes : 0,
+      overPipes : 0,
+      usedGlue : 0,
+      neededGlue : 0,
+      overGlue : 0,
+      isDone : false,
+      supervisorID : 0
+    },
+    isAllDone : false,
+    constructionAssesmentSheet : {
+      overevaluationCount : 0,
+      overShover : 0,
+      overSand : 0,
+      overSteelFrame : 0,
+      overCement : 0,
+      overTiles : 0,
+      overPipes : 0,
+      overGlue : 0,
+    }
+  });
+
   const getConstruction = async () => {
-    console.log("공사 확인, construction ID : ", props.constructionID);
-    const contract = new ethers.Contract(contractAddress, abi, wallet);
-    const result = await contract.getConstruction(props.constructionID);
-
-    console.log('result', result);
-    // setConstruction(result);
-
-    // const receipt = await tx.wait();
-    // console.log('Transaction was mined in block:', receipt.blockNumber);
+    const c = await solidity.getConstruction(props.constructionID);
+    console.log("construction : ", c)
+    setConstruction(c);
   }
+  // useEffect(()=>{
+  //   getConstruction();
+  // },[])
 
   return (
     <div className='m-2 p-4 border-yellow-700 border-2'>
@@ -33,7 +82,8 @@ export default function Construction(props) {
           <Box className="border-2 border-red-500">
             <p className='font-bold'>기초 공사</p>
             {/* <p>usedShovelHour : {props.construction[3][0]}</p> */}
-            <p>neededShovelHour : </p>
+            <p>neededShovelHour :{construction.name} </p>
+            {/* <p>neededShovelHour : </p> */}
             <p>overShover : </p>
             <p>usedSand : </p>
             <p>neededSand : </p>
