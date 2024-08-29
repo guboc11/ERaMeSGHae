@@ -68,6 +68,7 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
 
   function createConstruction(
     uint constructorId,
+    string memory name,
     uint neededShovelHour,
     uint neededSand,
     uint neededSteelFrame,
@@ -87,6 +88,7 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
     Construction memory newConstruction = Construction(
       constructionId,
       constructorId,
+      name,
       0,
       newBaseBuild,
       newFrameBuild,

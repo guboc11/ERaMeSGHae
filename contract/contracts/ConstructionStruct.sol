@@ -12,6 +12,7 @@ contract ConstructionStruct {
   struct Construction {
     uint id;
     uint constructorId;
+    string name;
     uint totalEvaluationCount;
     BaseBuild baseBuild;
     FramingBuild framingBuild;
