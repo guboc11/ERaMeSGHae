@@ -72,7 +72,8 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
       0,
       newBaseBuild,
       newFrameBuild,
-      newFinishBuild
+      newFinishBuild,
+      false
     );
 
     // construction 데이터 Map에 추가
@@ -324,5 +325,18 @@ contract MyContract is ConstructionStruct, SupervisorStruct{
 
   }
   */
+
+  function ConstructionCompleted(
+    uint constructionId,
+    uint supervisorId
+  ) public {
+    Construction memory c = constructionMap[constructionId];
+    Supervisor memory s = supervisorMap[c.finishingBuild.supervisorID];
+    if (c.finishingBuild.isDone && s.result1 == ExamStatus.Yes && s.result2==ExamStatus.Yes && s.result3==ExamStatus.Yes){
+      c.isAllDone = true;
+    }
+  }
+  
+  
 
 }

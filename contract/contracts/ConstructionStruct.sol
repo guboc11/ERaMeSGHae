@@ -8,6 +8,7 @@ contract ConstructionStruct {
     BaseBuild baseBuild;
     FramingBuild framingBuild;
     FinishingBuild finishingBuild;
+    bool isAllDone;
   }
   
   // 기초 공사
